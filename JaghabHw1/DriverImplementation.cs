@@ -42,10 +42,18 @@ namespace JaghabHw1 {
 
         private void ReadObjectJSON(string path, out Language type) {
             FileStream reader = new FileStream(path, FileMode.Open, FileAccess.Read);
-            DataContractJsonSerializer inSer = new DataContractJsonSerializer(typeof(Currency));
+            StreamReader sr = new StreamReader(reader, System.Text.Encoding.UTF8);
+            string utf8Str = sr.ReadToEnd();
 
-            type = (Language)inSer.ReadObject(reader);
+            byte[] bArr = System.Text.Encoding.UTF8.GetBytes(utf8Str);
+            MemoryStream ms = new MemoryStream(bArr);
+
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Language));
+
+            type = (Language)ser.ReadObject(ms);
             reader.Close();
+            sr.Close();
+            ms.Close();
         }
 
         /// <summary>
@@ -56,7 +64,7 @@ namespace JaghabHw1 {
 
         private void ReadObjectJSON(string path, out Country type) {
             FileStream reader = new FileStream(path, FileMode.Open, FileAccess.Read);
-            DataContractJsonSerializer inSer = new DataContractJsonSerializer(typeof(Currency));
+            DataContractJsonSerializer inSer = new DataContractJsonSerializer(typeof(Country));
 
             type = (Country)inSer.ReadObject(reader);
             reader.Close();
@@ -119,17 +127,26 @@ namespace JaghabHw1 {
         }
 
         /// <summary>
-        /// Deserializes a serialized Language type and passes it out.  
+        /// Deserializes a serialized Language type and passes it out.
+        /// <para>Supports UTF-8 encoding.</para>
         /// </summary>
         /// <param name="path">Path to deserialize object.</param>
         /// <param name="type">Sets the calling argument to type.</param>
 
         private void ReadObjectXML(string path, out Language type) {
             FileStream reader = new FileStream(path, FileMode.Open, FileAccess.Read);
-            DataContractSerializer inSer = new DataContractSerializer(typeof(Language));
+            StreamReader sr = new StreamReader(reader, System.Text.Encoding.UTF8);
+            string utf8Str = sr.ReadToEnd();
 
-            type = (Language)inSer.ReadObject(reader);
+            byte[] bArr = System.Text.Encoding.UTF8.GetBytes(utf8Str);
+            MemoryStream ms = new MemoryStream(bArr);
+
+            DataContractSerializer ser = new DataContractSerializer(typeof(Language));
+
+            type = (Language)ser.ReadObject(ms);
             reader.Close();
+            sr.Close();
+            ms.Close();
         }
 
         /// <summary>
@@ -162,15 +179,24 @@ namespace JaghabHw1 {
 
         /// <summary>
         /// Serialize a Language type into XML.
+        /// <para>Supports UTF-8 encoding.</para>
         /// </summary>
         /// <param name="path">Path to serialized object.</param>
         /// <param name="type">Type to Serialize</param>
 
         private void WriteObjectXML(string path, Language type) {
-            FileStream writer = new FileStream(path, FileMode.Create, FileAccess.Write);
-            DataContractSerializer ser = new DataContractSerializer(typeof(Language));
 
-            ser.WriteObject(writer, type);
+            DataContractSerializer ser = new DataContractSerializer(typeof(Language));
+            MemoryStream ms = new MemoryStream();
+            ser.WriteObject(ms, type);
+
+
+            // seralize 
+            byte[] data = ms.ToArray();
+            string utf8Str = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+
+            StreamWriter writer = new StreamWriter(path, false, System.Text.Encoding.UTF8);
+            writer.Write(utf8Str);
             writer.Close();
         }
 
@@ -223,17 +249,17 @@ namespace JaghabHw1 {
                 Console.WriteLine("8 - Write Language from JSON file");
                 Console.WriteLine("9 - Write Language from XML file");
                 Console.WriteLine("10 - Display Language data on screen");
-                Console.WriteLine("6 - Read Country from JSON file");
-                Console.WriteLine("7 - Read Country from XML file");
-                Console.WriteLine("8 - Write Country from JSON file");
-                Console.WriteLine("9 - Write Country from XML file");
-                Console.WriteLine("10 - Display Country data on screen");
+                Console.WriteLine("11 - Read Country from JSON file");
+                Console.WriteLine("12 - Read Country from XML file");
+                Console.WriteLine("13 - Write Country from JSON file");
+                Console.WriteLine("14 - Write Country from XML file");
+                Console.WriteLine("15 - Display Country data on screen");
                 Console.WriteLine("16 - Exit");
 
                 Console.Write("Enter choice: ");
 
                 string input = Console.ReadLine(); // gets users input as string
-                CountryAppUnitTesting countryApp = new CountryAppUnitTesting();              
+                CountryAppUnitTesting countryApp = new CountryAppUnitTesting();
 
                 // if false, set menu to exit. 
                 if (!int.TryParse(input, out menu)) {
