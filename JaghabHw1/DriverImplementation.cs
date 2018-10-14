@@ -396,7 +396,7 @@ namespace JaghabHw1 {
                         Console.Write("Please enter a filename: ");
                         string path = Console.ReadLine();
 
-                        WriteObjectJSON(path, cou);
+                        WriteObjectXML(path, cou);
                         Console.WriteLine($"Serialized {path} .\n");
                         break;
                     }
