@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Driver.cs" />
     <Compile Include="DriverImplementation.cs" />
+    <Compile Include="ProjectMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
