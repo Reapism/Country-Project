@@ -1,4 +1,6 @@
-﻿namespace JaghabHw1 {
+﻿using System;
+
+namespace JaghabHw1 {
 
     /// <summary>
     /// Main Driver program.
@@ -16,9 +18,10 @@
         #region Main method.
 
         static void Main(string[] args) {
-            DriverImplementation di = new DriverImplementation();
 
-            di.UnitTestCountry();
+            ProjectMenu menu = new ProjectMenu();
+            menu.UnitTestCountryList();
+         
         }
 
         #endregion
